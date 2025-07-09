@@ -6,7 +6,7 @@ process Convert_Data {
     path(bvec)
 
     output:
-    path("data.mif"), emit: data_mif
+    path("data.mif"), emit: converted_data
 
     script:
     """

@@ -7,7 +7,7 @@ process Global_Tractography {
     path(csf_response)
 
     output:
-    path("tracks.tck"), emit: tracks
+    path("tracks_global.tck"), emit: tracks_global
 
     script:
     """
