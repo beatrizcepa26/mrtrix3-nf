@@ -14,7 +14,7 @@ process MSMT_Tractography {
     tckglobal $data_mif $wm_response \
     -riso $csf_response \
     -riso $gm_response \
-    -niter 1e9 tracks.tck \
+    -niter 1e9 tracks_msmt.tck \
     -force
 
     """
