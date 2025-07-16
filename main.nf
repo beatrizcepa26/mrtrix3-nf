@@ -1,6 +1,6 @@
 include {Convert_Data} from './modules/Convert_Data.nf'
 include {Response_Function_Estimation} from './modules/Response_Function_Estimation.nf'
-include {Global_Tractography} from './modules/Global_Tractography.nf'
+include {MSMT_Tractography} from './modules/MSMT_Tractography.nf'
 // include {DWI_Preprocessing} from './modules/DWI_Preprocessing.nf'
 include {T1_Segmentation} from './modules/T1_Segmentation.nf'
 include {AC_Tractography} from './modules/AC_Tractography.nf'
@@ -29,14 +29,14 @@ workflow{
         error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."
     }
 
-    if (params.trck=='global') {
+    if (params.trck=='msmt') {
 
         rfe_results = Response_Function_Estimation(converted_data)
         wm_response = rfe_results.wm_response
         gm_response = rfe_results.gm_response
         csf_response = rfe_results.csf_response
 
-        tracks_global = Global_Tractography(converted_data, wm_response, gm_response, csf_response)
+        tracks_msmt = MSMT_Tractography(converted_data, wm_response, gm_response, csf_response)
 
     }
 

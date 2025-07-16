@@ -1,4 +1,4 @@
-process Global_Tractography {
+process MSMT_Tractography {
 
     input:
     path(data_mif)
@@ -7,7 +7,7 @@ process Global_Tractography {
     path(csf_response)
 
     output:
-    path("tracks_global.tck"), emit: tracks_global
+    path("tracks_msmt.tck"), emit: tracks_msmt
 
     script:
     """
