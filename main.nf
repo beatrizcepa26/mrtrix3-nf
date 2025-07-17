@@ -16,6 +16,8 @@ workflow{
     }
 
     log.info "Input: ${params.input}"
+    log.info "Tractography type: ${params.trck}"
+    log.info "Tractography algorithm: ${params.trck_algorithm}"
 
     def root = file(params.input)
     def dwi = root.resolve("dwi.nii.gz")
@@ -71,7 +73,7 @@ workflow{
     if (params.trck=='streamline') {
 
         // iFOD2
-        if (params.trck_algorithm == 'iFOD2') {
+        if (params.trck_algorithm == 'iFOD2' || params.trck_algorithm == 'iFOD1') {
 
             wb_mask = Whole_Brain_Mask(converted_data, bval, bvec)
 
@@ -83,7 +85,7 @@ workflow{
         } 
         
         else {
-            error "Unsupported algorithm for streamline tractography: ${params.trck_algorithm}. Choose 'iFOD2'."
+            error "Unsupported algorithm for streamline tractography: ${params.trck_algorithm}. Choose 'iFOD2' or 'iFOD1'."
         }
 
     }    
