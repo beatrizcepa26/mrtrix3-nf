@@ -1,3 +1,4 @@
+include {Parameter_List} from './modules/Parameter_List.nf'
 include {Convert_Data} from './modules/Convert_Data.nf'
 include {Response_Function_Estimation} from './modules/Response_Function_Estimation.nf'
 include {MSMT_Tractography} from './modules/MSMT_Tractography.nf'
@@ -21,9 +22,11 @@ workflow{
 
     def root = file(params.input)
     def dwi = root.resolve("dwi.nii.gz")
-    def bval = root.resolve("bval")
-    def bvec = root.resolve("bvec")
+    def bval = root.resolve("bval") // Re-check if this is needed
+    def bvec = root.resolve("bvec") // Re-check if this is needed
     // def b0 = root.resolve("rev_b0.nii.gz")
+
+    Parameter_List()
 
     converted_data = Channel.empty()
 
@@ -72,15 +75,15 @@ workflow{
     // Streamline tractography
     if (params.trck=='streamline') {
 
-        // iFOD2
+        // iFOD1 e iFOD2
         if (params.trck_algorithm == 'iFOD2' || params.trck_algorithm == 'iFOD1') {
 
-            wb_mask = Whole_Brain_Mask(converted_data, bval, bvec)
+            seed_image = Whole_Brain_Mask(converted_data, bval, bvec)
 
             fod_results = FOD_Estimation(converted_data, wm_response, gm_response, csf_response, bval, bvec)
             wm_fod = fod_results.wm_fod
 
-            tracks_str = Streamline_Tractography(wm_fod, bval, bvec, wb_mask)
+            tracks_str = Streamline_Tractography(wm_fod, seed_image)
 
         } 
         
