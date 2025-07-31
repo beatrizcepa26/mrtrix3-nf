@@ -80,8 +80,8 @@ process Streamline_Tractography {
 
     switch(params.trck_algorithm) {
 
-        case ['iFOD2', 'iFOD1']:
-            
+        case ['iFOD2', 'iFOD1']
+
             algorithm_params = """
                 $wm_fod tracks_str.tck -algorithm $params.trck_algorithm
             """.replaceAll(/\s+/, ' ').trim()
