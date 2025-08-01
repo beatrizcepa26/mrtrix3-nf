@@ -78,17 +78,11 @@ process Streamline_Tractography {
 
     def algorithm_params = ""
 
-    switch(params.trck_algorithm) {
+    if (params.trck_algorithm in ['iFOD2', 'iFOD1']) {
 
-        case ['iFOD2', 'iFOD1']
-
-            algorithm_params = """
-                $wm_fod tracks_str.tck -algorithm $params.trck_algorithm
-            """.replaceAll(/\s+/, ' ').trim()
-            break
-
-
-            
+        algorithm_params = """
+            $wm_fod tracks_str.tck -algorithm $params.trck_algorithm
+        """.replaceAll(/\s+/, ' ').trim()         
     }
 
     """
