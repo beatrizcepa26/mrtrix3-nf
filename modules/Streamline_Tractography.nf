@@ -17,8 +17,8 @@ process Streamline_Tractography {
     def seeding_mech = ""
 
     if (params.seed_image) {
-        for (image in params.seed_image) {
-            seeding_mech += "-seed_image $image "
+        params.seed_image.split(',')
+                    .each { image -> seeding_mech += "-seed_image $image "
         }
     }
     seeding_mech = seeding_mech.replaceAll(/\s+/, ' ').trim()
