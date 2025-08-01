@@ -14,7 +14,7 @@ process Streamline_Tractography {
     // Config file options
 
     // Only one seeding option permitted, and only for masks calculated within the pipeline
-    def seeding_mech = """"""
+    def seeding_mech = ""
 
     if (params.seed_image) {
         for (image in params.seed_image) {
