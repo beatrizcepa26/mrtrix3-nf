@@ -30,6 +30,18 @@ process Streamline_Tractography {
                     .each { image -> seeding_mech += "-seed_dynamic $image "}
     }
 
+    if (params.seed_sphere) {
+        def spec = params.seed_sphere.split(',')
+
+        for (i=0; i<spec.size(); i+=4) {
+            if (i + 3 < spec.size()) {
+                seeding_mech += "-seed_sphere ${spec[i]},${spec[i+1]},${spec[i+2]},${spec[i+3]}"
+            } else {
+                error "Invalid seed_sphere specification: ${params.seed_sphere}. Must be in groups of four comma-separated (XYZ position and radius)"
+            }
+        }                
+    }
+
     seeding_mech = seeding_mech.replaceAll(/\s+/, ' ').trim()
 
     def seeding_opt = """ 
