@@ -16,11 +16,20 @@ process Streamline_Tractography {
     // Only one seeding option permitted, and only for masks calculated within the pipeline
     def seeding_mech = ""
 
+    // provide the seeding options separated by commas
     if (params.seed_image) {
         params.seed_image.split(',')
-                    .each { image -> seeding_mech += "-seed_image $image "
-        }
+                    .each { image -> seeding_mech += "-seed_image $image "}
+    } 
+    if (params.seed_rejection) {
+        params.seed_rejection.split(',')
+                    .each { image -> seeding_mech += "-seed_rejection $image "}
     }
+    if (params.seed_dynamic) {
+        params.seed_dynamic.split(',')
+                    .each { image -> seeding_mech += "-seed_dynamic $image "}
+    }
+
     seeding_mech = seeding_mech.replaceAll(/\s+/, ' ').trim()
 
     def seeding_opt = """ 
