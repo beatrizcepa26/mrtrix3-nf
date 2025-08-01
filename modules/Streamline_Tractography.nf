@@ -14,14 +14,14 @@ process Streamline_Tractography {
     // Config file options
 
     // Only one seeding option permitted, and only for masks calculated within the pipeline
-    def seeding_mech = """
-        ${params.seed_image ? "-seed_image $seed_image" : ""}
-        ${params.seed_sphere ? "-seed_sphere $seed_image" : ""}
-        ${params.seed_random_per_voxel ? "-seed_random_per_voxel $seed_image $params.num_per_voxel" : ""}
-        ${params.seed_grid_per_voxel ? "-seed_grid_per_voxel $seed_image $params.grid_size" : ""}
-        ${params.seed_rejection ? "-seed_rejection $seed_image" : ""}
-        ${params.seed_dynamic ? "-seed_dynamic $seed_image" : ""}
-    """.replaceAll(/\s+/, ' ').trim()
+    def seeding_mech = """"""
+
+    if (params.seed_image) {
+        for (image in params.seed_image) {
+            seeding_mech += "-seed_image $image "
+        }
+    }
+    seeding_mech = seeding_mech.replaceAll(/\s+/, ' ').trim()
 
     def seeding_opt = """ 
         ${params.seeds ? "-seeds $params.seeds" : ""}
