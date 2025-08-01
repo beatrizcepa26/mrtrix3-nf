@@ -4,7 +4,7 @@ process Streamline_Tractography {
     path(wm_fod)
     // path(bval)
     // path(bvec)
-    path(seed_image)
+    // path(seed_image)
 
     output:
     path("tracks_str.tck"), emit: tracks_str
