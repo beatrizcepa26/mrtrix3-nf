@@ -76,14 +76,16 @@ workflow{
     if (params.trck=='streamline') {
 
         // iFOD1 e iFOD2
-        if (params.trck_algorithm == 'iFOD2' || params.trck_algorithm == 'iFOD1') {
+        if (params.trck_algorithm in ['iFOD2', 'iFOD1']) {
 
-            seed_image = Whole_Brain_Mask(converted_data, bval, bvec)
+            //seed_image = Whole_Brain_Mask(converted_data, bval, bvec)
 
             fod_results = FOD_Estimation(converted_data, wm_response, gm_response, csf_response, bval, bvec)
             wm_fod = fod_results.wm_fod
 
-            tracks_str = Streamline_Tractography(wm_fod, seed_image)
+            // tracks_str = Streamline_Tractography(wm_fod, seed_image)
+
+            tracks_str = Streamline_Tractography(wm_fod)
 
         } 
         
