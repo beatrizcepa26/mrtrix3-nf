@@ -30,9 +30,6 @@ process Streamline_Tractography {
         params.seed_dynamic.split(',')
                     .each { image -> seeding_mech += "-seed_dynamic $image "}
     }
-
-    
-    // not working yet --------
     if (params.seed_sphere) {
         def spec = params.seed_sphere.split(',')
 
@@ -56,7 +53,7 @@ process Streamline_Tractography {
         }
 
         for (int i=0; i<images.size(); i++) {
-            seeding_mech += "-seed_random_per_voxel ${images[i]} ${nums[i]}"
+            seeding_mech += "-seed_random_per_voxel ${images[i]} ${nums[i]} "
         }               
     }
     // -------------------------------
