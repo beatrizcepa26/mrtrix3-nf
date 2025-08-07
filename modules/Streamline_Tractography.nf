@@ -11,9 +11,6 @@ process Streamline_Tractography {
 
     script:
 
-    // Config file options
-
-    // Only one seeding option permitted, and only for masks calculated within the pipeline
     // Tractography seeding mechanisms
     def seeding_mech = ""
 
@@ -43,7 +40,6 @@ process Streamline_Tractography {
     }
     seeding_mech.replaceAll(/\s+/, ' ').trim()
 
-    // not tested yet ------------
     if (params.seed_random_per_voxel) {
         def images = params.seed_random_per_voxel.split(',')
         def nums = params.num_per_voxel.split(',')
@@ -56,7 +52,6 @@ process Streamline_Tractography {
             seeding_mech += "-seed_random_per_voxel ${images[i]} ${nums[i]} "
         }               
     }
-    // -------------------------------
 
     // Tractography seeding options and parameters
     def seeding_opt = """ 
