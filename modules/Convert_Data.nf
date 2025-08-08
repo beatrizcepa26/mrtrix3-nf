@@ -110,7 +110,7 @@ process Convert_Data {
 
     """ 
     mrconvert $dwi $img_prop $json $header $stride $dw_grad_opt $pe_tables $standard_opt \
-            $converted_data
+            data.mif 
     """
 
     // """
