@@ -33,10 +33,10 @@ workflow{
     if (dwi.exists() && bval.exists() && bvec.exists()) {
         converted_data = Convert_Data(dwi)
 
-        // rfe_results = Response_Function_Estimation(converted_data)
-        // wm_response = rfe_results.wm_response
-        // gm_response = rfe_results.gm_response
-        // csf_response = rfe_results.csf_response
+        rfe_results = Response_Function_Estimation(converted_data)
+        wm_response = rfe_results.wm_response
+        gm_response = rfe_results.gm_response
+        csf_response = rfe_results.csf_response
 
     } else {
         error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."
