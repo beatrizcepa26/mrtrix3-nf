@@ -18,7 +18,7 @@ process Response_Function_Estimation {
 
     // General dwi2response options
     def dwi2response_opt = """ 
-        ${params.roi_mask ? "-mask $params.roi_mask" : ""}
+        ${params.rfe_mask ? "-mask $params.rfe_mask" : ""}
         ${params.voxels ? "-voxels $params.voxels" : ""}
         ${params.shells ? "-shells $params.shells" : ""}
         ${params.lmax ? "-lmax $params.lmax" : ""}
