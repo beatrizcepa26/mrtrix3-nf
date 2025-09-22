@@ -27,7 +27,7 @@ process Response_Function_Estimation {
     // Options for Python scripts
     def python = """
         ${params.nocleanup ? "-nocleanup" : ""}
-        ${params.scratch ? "-scratch $params.scratch" : ""}
+        ${params.py_scratch ? "-scratch $params.py_scratch" : ""}
         ${params.continue ? "-continue $params.continue_dir $params.continue_file" : ""}
     """.replaceAll(/\s+/, ' ').trim()
 
