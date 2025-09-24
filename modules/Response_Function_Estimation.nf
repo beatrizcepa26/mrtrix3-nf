@@ -26,9 +26,9 @@ process Response_Function_Estimation {
 
     // Options for Python scripts
     def python = """
-        ${params.nocleanup ? "-nocleanup" : ""}
+        ${params.py_nocleanup ? "-nocleanup" : ""}
         ${params.py_scratch ? "-scratch $params.py_scratch" : ""}
-        ${params.continue ? "-continue $params.continue_dir $params.continue_file" : ""}
+        ${params.py_continue ? "-continue $params.py_continue_dir $params.py_continue_file" : ""}
     """.replaceAll(/\s+/, ' ').trim()
 
     // Standard options
@@ -57,7 +57,7 @@ process Response_Function_Estimation {
     def fa_opt = """
         ${params.fa_erode ? "-erode $params.fa_erode" : ""}
         ${params.fa_number ? "-number $params.fa_number" : ""}
-        ${params.fa_threshold ? "-threshold : ""}
+        ${params.fa_threshold ? "-threshold $params.fa_threshold" : ""}
     """.replaceAll(/\s+/, ' ').trim()
 
     // manual options
@@ -130,12 +130,7 @@ process Response_Function_Estimation {
     }
 
     """
-    dwi2response $algorithm_params $data_mif \ 
-        $dw_grad_opt \ 
-        $dwi2response_opt \ 
-        $python \ 
-        $standard_opt \ 
-        wm_response.txt gm_response.txt csf_response.txt
+    dwi2response $algorithm_params $data_mif $dw_grad_opt $dwi2response_opt $python $standard_opt wm_response.txt gm_response.txt csf_response.txt
 
     """
 
@@ -144,8 +139,8 @@ process Response_Function_Estimation {
 
 
     
-    """
-    dwi2response dhollander $data_mif wm_response.txt gm_response.txt csf_response.txt
+    // """
+    // dwi2response dhollander $data_mif wm_response.txt gm_response.txt csf_response.txt
 
-    """
+    // """
 }
