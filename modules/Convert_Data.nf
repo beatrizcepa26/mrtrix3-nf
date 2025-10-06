@@ -101,11 +101,23 @@ process Convert_Data {
         ${params.debug ? "-debug" : ""}
         ${params.force ? "-force" : ""}
         ${params.nthreads ? "-nthreads $params.nthreads" : ""}
-        ${params.config ? "-config $params.config_key $params.config_value" : ""}
         ${params.help ? "-help" : ""}
         ${params.version ? "-version" : ""}
-    """.replaceAll(/\s+/, ' ').trim()
+    """
 
+    if (params.config){
+        def keys = params.config_key.split(',')
+        def values = params.config_value.split(',')
+
+        if (keys.size() != values.size()) {
+            error "Number of keys and values must match. Found ${keys.size()} keys and ${values.size()} values."
+        }
+
+        for (int i = 0; i < keys.size(); i++) {
+            standard_opt += " -config ${keys[i]} ${values[i]} "
+        }
+    }
+    standard_opt.replaceAll(/\s+/, ' ').trim()
 
 
     """ 
