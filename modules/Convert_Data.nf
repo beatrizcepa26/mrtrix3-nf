@@ -25,7 +25,7 @@ process Convert_Data {
             img_prop += " -coord ${axes[i]} ${selection[i]} "
         }
     }
-    img_prop.replaceAll(/\s+/, ' ').trim()
+    img_prop = img_prop.replaceAll(/\s+/, ' ').trim()
 
     // Handling JSON files
     def json = """
@@ -69,7 +69,7 @@ process Convert_Data {
             header += " -append_property ${keys[i]} ${values[i]} "
         }
     }
-    header.replaceAll(/\s+/, ' ').trim()
+    header = header.replaceAll(/\s+/, ' ').trim()
 
     // Stride options
     def stride = """${params.stride ? "-stride $params.stride" : ""}"""
@@ -117,7 +117,7 @@ process Convert_Data {
             standard_opt += " -config ${keys[i]} ${values[i]} "
         }
     }
-    standard_opt.replaceAll(/\s+/, ' ').trim()
+    standard_opt = standard_opt.replaceAll(/\s+/, ' ').trim()
 
 
     """ 

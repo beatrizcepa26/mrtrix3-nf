@@ -54,7 +54,7 @@ process Response_Function_Estimation {
             standard_opt += " -config ${keys[i]} ${values[i]} "
         }
     }
-    standard_opt.replaceAll(/\s+/, ' ').trim()
+    standard_opt = standard_opt.replaceAll(/\s+/, ' ').trim()
 
     // dhollander options
     def dhollander_opt = """
