@@ -103,7 +103,7 @@ process Convert_Data {
         ${params.nthreads ? "-nthreads $params.nthreads" : ""}
         ${params.help ? "-help" : ""}
         ${params.version ? "-version" : ""}
-    """
+    """.replaceAll(/\s+/, ' ').trim()
 
     if (params.config){
         def keys = params.config_key.split(',')
