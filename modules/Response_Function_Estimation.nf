@@ -2,14 +2,14 @@ process Response_Function_Estimation {
 
     input:
     path(data_mif)
-    path(voxel_mask, stageAs: "voxel_mask.nii.gz") optional true
-    path(fivett_image, stageAs: "5tt.nii.gz") optional true
+    path(voxel_mask, stageAs: "voxel_mask.nii.gz") optional: true
+    path(fivett_image, stageAs: "5tt.nii.gz") optional: true
 
     output:
-    path("wm_response.txt"), emit: wm_response, optional true
-    path("gm_response.txt"), emit: gm_response, optional true
-    path("csf_response.txt"), emit: csf_response, optional true
-    path("response.txt"), emit: response, optional true
+    path("wm_response.txt"), emit: wm_response, optional: true
+    path("gm_response.txt"), emit: gm_response, optional: true
+    path("csf_response.txt"), emit: csf_response, optional: true
+    path("response.txt"), emit: response, optional: true
 
     script:
 
