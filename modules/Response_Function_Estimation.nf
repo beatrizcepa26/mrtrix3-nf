@@ -109,13 +109,13 @@ process Response_Function_Estimation {
     def algorithm_params = ""
     def output_files = ""
     def fivett_image=fivett_image ? "5tt.nii.gz" : ""
-    def command = ""
+    def command_line = ""
 
     if (params.rfe_algorithm == 'dhollander') {
 
         algorithm_params = $dhollander_opt
         output_files = "wm_response.txt gm_response.txt csf_response.txt"
-        command = "dwi2response dhollander $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
+        command_line = "dwi2response dhollander $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
     }
     // else if (params.rfe_algorithm == 'fa') {
 
@@ -150,7 +150,7 @@ process Response_Function_Estimation {
 
 
     """
-    $command
+    $command_line
 
     """
 
