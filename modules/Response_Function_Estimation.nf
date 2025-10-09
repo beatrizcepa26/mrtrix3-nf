@@ -113,7 +113,7 @@ process Response_Function_Estimation {
 
     if (params.rfe_algorithm == 'dhollander') {
 
-        algorithm_params = $dhollander_opt
+        algorithm_params = dhollander_opt
         output_files = "wm_response.txt gm_response.txt csf_response.txt"
         command_line = "dwi2response dhollander $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
     }
