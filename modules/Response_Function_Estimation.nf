@@ -2,11 +2,14 @@ process Response_Function_Estimation {
 
     input:
     path(data_mif)
+    path(voxel_mask, stageAs: "voxel_mask.nii.gz") optional true
+    path(5tt_image, stageAs: "5tt.nii.gz") optional true
 
     output:
-    path("wm_response.txt"), emit: wm_response
-    path("gm_response.txt"), emit: gm_response
-    path("csf_response.txt"), emit: csf_response
+    path("wm_response.txt"), emit: wm_response, optional true
+    path("gm_response.txt"), emit: gm_response, optional true
+    path("csf_response.txt"), emit: csf_response, optional true
+    path("response.txt"), emit: response, optional true
 
     script:
 
@@ -102,54 +105,54 @@ process Response_Function_Estimation {
         ${params.tournier_max_iters ? "-max_iters $params.tournier_max_iters" : ""}
     """.replaceAll(/\s+/, ' ').trim()
 
-    // Algorithm selection
+    // Algorithm-specific parameters and output files
     def algorithm_params = ""
+    def output_files = ""
+    def 5tt_image=5tt_image ? "5tt.nii.gz" : ""
+    def command = ""
 
     if (params.rfe_algorithm == 'dhollander') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $dhollander_opt
-        """.replaceAll(/\s+/, ' ').trim()         
+        algorithm_params = $dhollander_opt
+        output_files = "wm_response.txt gm_response.txt csf_response.txt"
+        command = "dwi2response dhollander $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
     }
-    if (params.rfe_algorithm == 'fa') {
+    // else if (params.rfe_algorithm == 'fa') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $fa_opt
-        """.replaceAll(/\s+/, ' ').trim()         
-    }
-    if (params.rfe_algorithm == 'manual') {
+    //     algorithm_params = """
+    //         $params.rfe_algorithm $fa_opt
+    //     """.replaceAll(/\s+/, ' ').trim()         
+    // }
+    // else if (params.rfe_algorithm == 'manual') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $manual_opt
-        """.replaceAll(/\s+/, ' ').trim()         
-    }
-    if (params.rfe_algorithm == 'msmt_5tt') {
+    //     algorithm_params = """
+    //         $params.rfe_algorithm $manual_opt
+    //     """.replaceAll(/\s+/, ' ').trim()         
+    // }
+    // else if (params.rfe_algorithm == 'msmt_5tt') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $msmt_5tt_opt
-        """.replaceAll(/\s+/, ' ').trim()         
-    }
-    if (params.rfe_algorithm == 'tax') {
+    //     algorithm_params = """
+    //         $params.rfe_algorithm $msmt_5tt_opt
+    //     """.replaceAll(/\s+/, ' ').trim()         
+    // }
+    // else if (params.rfe_algorithm == 'tax') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $tax_opt
-        """.replaceAll(/\s+/, ' ').trim()         
-    }
-    if (params.rfe_algorithm == 'tournier') {
+    //     algorithm_params = """
+    //         $params.rfe_algorithm $tax_opt
+    //     """.replaceAll(/\s+/, ' ').trim()         
+    // }
+    // else if (params.rfe_algorithm == 'tournier') {
 
-        algorithm_params = """
-            $params.rfe_algorithm $tournier_opt
-        """.replaceAll(/\s+/, ' ').trim()         
-    }
+    //     algorithm_params = """
+    //         $params.rfe_algorithm $tournier_opt
+    //     """.replaceAll(/\s+/, ' ').trim()         
+    // } 
+
 
     """
-    dwi2response $algorithm_params $data_mif $dw_grad_opt $dwi2response_opt $python $standard_opt wm_response.txt gm_response.txt csf_response.txt
+    $command
 
     """
-
-
-
-
 
     
     // """
