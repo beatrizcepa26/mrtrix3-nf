@@ -3,7 +3,7 @@ process Response_Function_Estimation {
     input:
     path(data_mif)
     path(voxel_mask, stageAs: "voxel_mask.nii.gz") optional true
-    path(5tt_image, stageAs: "5tt.nii.gz") optional true
+    path(fivett_image, stageAs: "5tt.nii.gz") optional true
 
     output:
     path("wm_response.txt"), emit: wm_response, optional true
@@ -108,7 +108,7 @@ process Response_Function_Estimation {
     // Algorithm-specific parameters and output files
     def algorithm_params = ""
     def output_files = ""
-    def 5tt_image=5tt_image ? "5tt.nii.gz" : ""
+    def fivett_image=fivett_image ? "5tt.nii.gz" : ""
     def command = ""
 
     if (params.rfe_algorithm == 'dhollander') {
