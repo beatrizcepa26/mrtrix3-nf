@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 include {Parameter_List} from './modules/Parameter_List.nf'
 include {Convert_Data} from './modules/Convert_Data.nf'
 include {Response_Function_Estimation} from './modules/Response_Function_Estimation.nf'
