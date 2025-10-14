@@ -108,12 +108,6 @@ process Response_Function_Estimation {
     // Algorithm-specific parameters and output files
     def algorithm_params = ""
     def output_files = ""
-
-    def fivett_input = ""
-    if (params.rfe_algorithm == 'msmt_5tt' && fivett_image) {
-        fivett_input = "5tt.nii.gz"
-    }
-    
     def command_line = ""
 
     if (params.rfe_algorithm == 'dhollander') {
