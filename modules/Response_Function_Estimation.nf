@@ -149,6 +149,16 @@ process Response_Function_Estimation {
 
 
     """
+    echo "Debug info:"
+    echo "Algorithm: ${params.rfe_algorithm}"
+    echo "Data file: ${data_mif}"
+    echo "Algorithm params: ${algorithm_params}"
+    echo "DW grad opt: ${dw_grad_opt}"
+    echo "DWI2response opt: ${dwi2response_opt}"
+    echo "Python: ${python}"
+    echo "Standard opt: ${standard_opt}"
+    echo "Final command: ${command_line}"
+    
     $command_line
     """
 
