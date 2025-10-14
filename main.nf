@@ -41,8 +41,8 @@ workflow{
         def dummy_file = file('NO_FILE')
         
         // Conditionally set the actual files or dummy files
-        def voxel_mask_input = voxel_mask ? voxel_mask : dummy_file
-        def fivett_input = fivett_file ? fivett_file : dummy_file
+        def voxel_mask_input = voxel_mask.exists() ? voxel_mask : dummy_file
+        def fivett_input = fivett_file.exists() ? fivett_file : dummy_file
 
         rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
         wm_response = rfe_results.wm_response
