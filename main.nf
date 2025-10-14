@@ -27,6 +27,8 @@ workflow{
     def bval = root.resolve("bval") // Re-check if this is needed
     def bvec = root.resolve("bvec") // Re-check if this is needed
     // def b0 = root.resolve("rev_b0.nii.gz")
+    def voxel_mask = root.resolve("voxel_mask.nii.gz")
+    def fivett_file = root.resolve("5tt.nii.gz")
 
     Parameter_List()
 
@@ -34,8 +36,15 @@ workflow{
 
     if (dwi.exists() && bval.exists() && bvec.exists()) {
         converted_data = Convert_Data(dwi)
+            
+        // Create dummy files for optional inputs
+        def dummy_file = file('NO_FILE')
+        
+        // Conditionally set the actual files or dummy files
+        def voxel_mask_input = voxel_mask ? voxel_mask : dummy_file
+        def fivett_input = fivett_file ? fivett_file : dummy_file
 
-        rfe_results = Response_Function_Estimation(converted_data)
+        rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
         wm_response = rfe_results.wm_response
         gm_response = rfe_results.gm_response
         csf_response = rfe_results.csf_response
