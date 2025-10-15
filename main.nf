@@ -37,9 +37,16 @@ workflow{
     if (dwi.exists() && bval.exists() && bvec.exists()) {
         converted_data = Convert_Data(dwi)
     
-        // Create unique dummy files for optional inputs
-        def voxel_mask_input = voxel_mask.exists() ? voxel_mask : file("${workflow.workDir}/NO_VOXEL_MASK")
-        def fivett_input = fivett_file.exists() ? fivett_file : file("${workflow.workDir}/NO_FIVETT_FILE")
+        // Create dummy files in current directory if needed
+        if (!voxel_mask.exists()) {
+            file("NO_VOXEL_MASK").text = ""
+        }
+        if (!fivett_file.exists()) {
+            file("NO_FIVETT_FILE").text = ""
+        }
+
+        def voxel_mask_input = voxel_mask.exists() ? voxel_mask : file("NO_VOXEL_MASK")
+        def fivett_input = fivett_file.exists() ? fivett_file : file("NO_FIVETT_FILE")
 
         rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
         wm_response = rfe_results.wm_response
