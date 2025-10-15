@@ -1,12 +1,12 @@
 process Convert_Data {
 
     input:
-    path(dwi)
+    path dwi 
     // path(bval)
     // path(bvec)
 
     output:
-    path("data.mif"), emit: converted_data
+    path "data.mif", emit: converted_data
 
     script:
 
