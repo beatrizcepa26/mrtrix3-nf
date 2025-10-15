@@ -34,28 +34,27 @@ workflow{
 
     converted_data = Channel.empty()
 
-    if (dwi.exists() && bval.exists() && bvec.exists()) {
-        converted_data = Convert_Data(dwi)
-    
-        // Create dummy files in current directory if needed
-        if (!voxel_mask.exists()) {
-            file("NO_VOXEL_MASK").text = ""
-        }
-        if (!fivett_file.exists()) {
-            file("NO_FIVETT_FILE").text = ""
-        }
-
-        def voxel_mask_input = voxel_mask.exists() ? voxel_mask : file("NO_VOXEL_MASK")
-        def fivett_input = fivett_file.exists() ? fivett_file : file("NO_FIVETT_FILE")
-
-        rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
-        wm_response = rfe_results.wm_response
-        gm_response = rfe_results.gm_response
-        csf_response = rfe_results.csf_response
-
-    } else {
-        error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."
+    if !(dwi.exists() && bval.exists() && bvec.exists()) {
+        error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."        
     }
+
+    converted_data = Convert_Data(dwi)
+    
+    // Create dummy files in current directory if needed
+    if (!voxel_mask.exists()) {
+        file("NO_VOXEL_MASK").text = ""
+    }
+    if (!fivett_file.exists()) {
+        file("NO_FIVETT_FILE").text = ""
+    }
+
+    def voxel_mask_input = voxel_mask.exists() ? voxel_mask : file("NO_VOXEL_MASK")
+    def fivett_input = fivett_file.exists() ? fivett_file : file("NO_FIVETT_FILE")
+
+    rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
+    wm_response = rfe_results.wm_response
+    gm_response = rfe_results.gm_response
+    csf_response = rfe_results.csf_response
 
     // // Multi-shell Multi-tissue tractography
     // if (params.trck=='msmt') {
