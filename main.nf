@@ -52,9 +52,12 @@ workflow{
     def fivett_input = fivett_file.exists() ? fivett_file : file("NO_FIVETT_FILE")
 
     rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
+    
+    // Extract response files
     wm_response = rfe_results.wm_response
     gm_response = rfe_results.gm_response
     csf_response = rfe_results.csf_response
+    response = rfe_results.response
 
     // // Multi-shell Multi-tissue tractography
     // if (params.trck=='msmt') {

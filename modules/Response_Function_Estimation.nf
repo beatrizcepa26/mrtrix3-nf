@@ -115,13 +115,14 @@ process Response_Function_Estimation {
         algorithm_params = dhollander_opt
         output_files = "wm_response.txt gm_response.txt csf_response.txt"
         command_line = "dwi2response dhollander $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
-    }
-    // else if (params.rfe_algorithm == 'fa') {
 
-    //     algorithm_params = """
-    //         $params.rfe_algorithm $fa_opt
-    //     """.replaceAll(/\s+/, ' ').trim()         
-    // }
+    } else if (params.rfe_algorithm == 'fa') {
+
+        algorithm_params = fa_opt
+        output_files = "response.txt"
+        command_line = "dwi2response fa $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
+
+    }
     // else if (params.rfe_algorithm == 'manual') {
 
     //     algorithm_params = """
@@ -148,17 +149,7 @@ process Response_Function_Estimation {
     // } 
 
 
-    """
-    echo "Debug info:"
-    echo "Algorithm: ${params.rfe_algorithm}"
-    echo "Data file: ${data_mif}"
-    echo "Algorithm params: ${algorithm_params}"
-    echo "DW grad opt: ${dw_grad_opt}"
-    echo "DWI2response opt: ${dwi2response_opt}"
-    echo "Python: ${python}"
-    echo "Standard opt: ${standard_opt}"
-    echo "Final command: ${command_line}"
-    
+    """    
     $command_line
     """
 
