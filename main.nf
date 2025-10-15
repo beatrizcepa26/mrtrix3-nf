@@ -34,7 +34,7 @@ workflow{
 
     converted_data = Channel.empty()
 
-    if !(dwi.exists() && bval.exists() && bvec.exists()) {
+    if (!(dwi.exists() && bval.exists() && bvec.exists())) {
         error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."        
     }
 
