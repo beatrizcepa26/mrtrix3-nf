@@ -27,7 +27,7 @@ workflow{
     def bval = root.resolve("bval")
     def bvec = root.resolve("bvec")
     def voxel_mask = root.resolve("voxel_mask.mif")
-    def fivett_file = root.resolve("5tt.nii.gz")
+    def fivett_file = root.resolve("5tt.mif")
 
     Parameter_List()
 
@@ -47,7 +47,7 @@ workflow{
     if (!fivett_file.exists()) {
         file("NO_FIVETT_FILE").text = ""
         fivett_file = file("NO_FIVETT_FILE")
-    }
+    } // TODO: add fivett_file creation with 5ttgen if rfe.algorithm is msmt_5tt
 
     rfe_results = Response_Function_Estimation(converted_data, voxel_mask, fivett_file)
 
