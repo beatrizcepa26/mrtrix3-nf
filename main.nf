@@ -27,7 +27,7 @@ workflow{
     def bval = root.resolve("bval") // Re-check if this is needed
     def bvec = root.resolve("bvec") // Re-check if this is needed
     // def b0 = root.resolve("rev_b0.nii.gz")
-    def voxel_mask = root.resolve("voxel_mask.nii.gz")
+    def voxel_mask = file("${root}/voxel_mask.*")
     def fivett_file = root.resolve("5tt.nii.gz")
 
     Parameter_List()
@@ -43,16 +43,15 @@ workflow{
     // Create dummy files in current directory if needed
     if (!voxel_mask.exists()) {
         file("NO_VOXEL_MASK").text = ""
+        voxel_mask = file("NO_VOXEL_MASK")
     }
     if (!fivett_file.exists()) {
         file("NO_FIVETT_FILE").text = ""
+        fivett_file = file("NO_FIVETT_FILE")
     }
 
-    def voxel_mask_input = voxel_mask.exists() ? voxel_mask : file("NO_VOXEL_MASK")
-    def fivett_input = fivett_file.exists() ? fivett_file : file("NO_FIVETT_FILE")
+    rfe_results = Response_Function_Estimation(converted_data, voxel_mask, fivett_file)
 
-    rfe_results = Response_Function_Estimation(converted_data, voxel_mask_input, fivett_input)
-    
     // Extract response files
     wm_response = rfe_results.wm_response
     gm_response = rfe_results.gm_response
