@@ -24,10 +24,13 @@ workflow{
 
     def root = file(params.input)
     def dwi = root.resolve("dwi.nii.gz")
-    def bval = root.resolve("bval") // Re-check if this is needed
-    def bvec = root.resolve("bvec") // Re-check if this is needed
-    // def b0 = root.resolve("rev_b0.nii.gz")
-    def voxel_mask = file("${root}/voxel_mask.*")
+    def bval = root.resolve("bval")
+    def bvec = root.resolve("bvec")
+
+    // Fix the voxel_mask file handling
+    def voxel_mask_files = file("${root}/voxel_mask*")
+    def voxel_mask = voxel_mask_files.isEmpty() ? null : voxel_mask_files[0]
+
     def fivett_file = root.resolve("5tt.nii.gz")
 
     Parameter_List()
@@ -41,7 +44,7 @@ workflow{
     converted_data = Convert_Data(dwi)
     
     // Create dummy files in current directory if needed
-    if (!voxel_mask.exists()) {
+    if (!voxel_mask) {
         file("NO_VOXEL_MASK").text = ""
         voxel_mask = file("NO_VOXEL_MASK")
     }
