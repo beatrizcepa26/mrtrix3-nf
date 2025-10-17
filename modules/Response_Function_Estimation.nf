@@ -134,13 +134,12 @@ process Response_Function_Estimation {
         output_files = "wm_response.txt gm_response.txt csf_response.txt"
         command_line = "dwi2response msmt_5tt $data_mif $fivett_image $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
                   
-    }
-    // else if (params.rfe_algorithm == 'tax') {
+    } else if (params.rfe_algorithm == 'tax') {
 
-    //     algorithm_params = """
-    //         $params.rfe_algorithm $tax_opt
-    //     """.replaceAll(/\s+/, ' ').trim()         
-    // }
+        algorithm_params = tax_opt
+        output_files = "response.txt"
+        command_line = "dwi2response tax $data_mif $output_files $algorithm_params $dw_grad_opt $dwi2response_opt $python $standard_opt"
+    }
     // else if (params.rfe_algorithm == 'tournier') {
 
     //     algorithm_params = """
