@@ -1,3 +1,5 @@
+nextflow.enable.dsl=2
+
 include {Parameter_List} from './modules/Parameter_List.nf'
 include {Convert_Data} from './modules/Convert_Data.nf'
 include {Response_Function_Estimation} from './modules/Response_Function_Estimation.nf'
@@ -22,25 +24,38 @@ workflow{
 
     def root = file(params.input)
     def dwi = root.resolve("dwi.nii.gz")
-    def bval = root.resolve("bval") // Re-check if this is needed
-    def bvec = root.resolve("bvec") // Re-check if this is needed
-    // def b0 = root.resolve("rev_b0.nii.gz")
+    def bval = root.resolve("bval")
+    def bvec = root.resolve("bvec")
+    def voxel_mask = root.resolve("voxel_mask.mif")
+    def fivett_file = root.resolve("5tt.mif")
 
     Parameter_List()
 
     converted_data = Channel.empty()
 
-    if (dwi.exists() && bval.exists() && bvec.exists()) {
-        converted_data = Convert_Data(dwi)
-
-        // rfe_results = Response_Function_Estimation(converted_data)
-        // wm_response = rfe_results.wm_response
-        // gm_response = rfe_results.gm_response
-        // csf_response = rfe_results.csf_response
-
-    } else {
-        error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."
+    if (!(dwi.exists() && bval.exists() && bvec.exists())) {
+        error "Required files (dwi.nii.gz, bval, bvec) not found in the input directory."        
     }
+
+    converted_data = Convert_Data(dwi)
+    
+    // Create dummy files in current directory if needed
+    if (!voxel_mask.exists()) {
+        file("NO_VOXEL_MASK").text = ""
+        voxel_mask = file("NO_VOXEL_MASK")
+    }
+    if (!fivett_file.exists()) {
+        file("NO_FIVETT_FILE").text = ""
+        fivett_file = file("NO_FIVETT_FILE")
+    } // TODO: add fivett_file creation with 5ttgen if rfe.algorithm is msmt_5tt
+
+    rfe_results = Response_Function_Estimation(converted_data, voxel_mask, fivett_file)
+
+    // Extract response files
+    wm_response = rfe_results.wm_response
+    gm_response = rfe_results.gm_response
+    csf_response = rfe_results.csf_response
+    response = rfe_results.response
 
     // // Multi-shell Multi-tissue tractography
     // if (params.trck=='msmt') {

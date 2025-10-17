@@ -1,12 +1,12 @@
 process Convert_Data {
 
     input:
-    path(dwi)
+    path dwi 
     // path(bval)
     // path(bvec)
 
     output:
-    path("data.mif"), emit: converted_data
+    path "data.mif", emit: converted_data
 
     script:
 
@@ -25,7 +25,7 @@ process Convert_Data {
             img_prop += " -coord ${axes[i]} ${selection[i]} "
         }
     }
-    img_prop.replaceAll(/\s+/, ' ').trim()
+    img_prop = img_prop.replaceAll(/\s+/, ' ').trim()
 
     // Handling JSON files
     def json = """
@@ -69,7 +69,7 @@ process Convert_Data {
             header += " -append_property ${keys[i]} ${values[i]} "
         }
     }
-    header.replaceAll(/\s+/, ' ').trim()
+    header = header.replaceAll(/\s+/, ' ').trim()
 
     // Stride options
     def stride = """${params.stride ? "-stride $params.stride" : ""}"""
@@ -101,11 +101,23 @@ process Convert_Data {
         ${params.debug ? "-debug" : ""}
         ${params.force ? "-force" : ""}
         ${params.nthreads ? "-nthreads $params.nthreads" : ""}
-        ${params.config ? "-config $params.config_key $params.config_value" : ""}
         ${params.help ? "-help" : ""}
         ${params.version ? "-version" : ""}
     """.replaceAll(/\s+/, ' ').trim()
 
+    if (params.config){
+        def keys = params.config_key.split(',')
+        def values = params.config_value.split(',')
+
+        if (keys.size() != values.size()) {
+            error "Number of keys and values must match. Found ${keys.size()} keys and ${values.size()} values."
+        }
+
+        for (int i = 0; i < keys.size(); i++) {
+            standard_opt += " -config ${keys[i]} ${values[i]} "
+        }
+    }
+    standard_opt = standard_opt.replaceAll(/\s+/, ' ').trim()
 
 
     """ 
